@@ -1,0 +1,4 @@
+repository "Power Puzzles@Melodycat@cloud"
+  path "/"
+    br "/main"
+    co "/main"
