@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using Newtonsoft.Json.Linq;
 
 public class CLengthener : CComponent
 {
+    public bool ready = true;
 	public override bool high
     {
         get
@@ -12,10 +14,15 @@ public class CLengthener : CComponent
         }
         set
         {
-            if (value) _high = value;
+            Debug.Log("hi");
+            if (value)
+            {
+                _high = true;
+                sprite.sprite = on;
+            }
             else
             {
-                StartCoroutine(Extend());
+                if(ready) StartCoroutine(Extend());
             }
         }
     }
@@ -24,12 +31,10 @@ public class CLengthener : CComponent
 	// Use this for initialization
 	new void Start()
 	{
-        terminals = GetComponentsInChildren<Terminal>();
-        sprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        defaultSprite = Resources.Load<Sprite>("Wires/input_a");
+        base.Start();
         on = Resources.Load<Sprite>("Wires/input_b");
 		sprite.sprite = defaultSprite;
-        high = false;
+        _high = false;
     }
 
     // Update is called once per frame
@@ -40,15 +45,15 @@ public class CLengthener : CComponent
 
     private void OnMouseDown()
     {
-        high = !high;
-        if (high) sprite.sprite = on;
-        else sprite.sprite = defaultSprite;
     }
 
     public IEnumerator Extend()
     {
+        ready = false;
         yield return new WaitForSeconds(0.5f);
         _high = false;
+        sprite.sprite = defaultSprite;
+        ready = true;
     }
 }
 
