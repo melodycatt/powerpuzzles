@@ -1,8 +1,8 @@
-/*using System.Linq;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-//using TruthTable = Scripts.Utility.TruthTable;
+using TruthTable = Scripts.Utility.TruthTable;
 using UnityEngine.Windows;
 
 public class Tester : MonoBehaviour
@@ -52,4 +52,3 @@ public class Tester : MonoBehaviour
         
     }
 }
-*/
