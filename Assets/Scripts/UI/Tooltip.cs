@@ -1,16 +1,39 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Tooltip : MonoBehaviour
 {
     public RectTransform tooltip;
     public Vector3 offset;
+    public Texture2D cursor;
+    private bool _enabled = false;
+
+    public TextMeshProUGUI[] texts;
+
+    private string _name;
+    public string Name
+    {
+        get => _name;
+    }
+
+
+    public bool tooltipEnabled
+    {
+        get => _enabled;
+        set
+        {
+            if (!value) tooltip.position = new Vector3(0, 0, -100);
+            _enabled = value;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        texts = tooltip.GetComponentsInChildren<TextMeshProUGUI>();
+        //Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
     }
 
     // Update is called once per frame
@@ -21,8 +44,11 @@ public class Tooltip : MonoBehaviour
 
     public void MoveUI()
     {
-        Vector3 pos = Input.mousePosition + offset;
-        pos.z = 100;
-        tooltip.position = Camera.main.ScreenToWorldPoint(pos);
+        if (tooltipEnabled)
+        {
+            Vector3 pos = Input.mousePosition + offset;
+            pos.z = 100;
+            tooltip.position = Camera.main.ScreenToWorldPoint(pos);
+        }
     }
 }

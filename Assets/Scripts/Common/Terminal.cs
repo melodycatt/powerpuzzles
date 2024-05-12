@@ -105,6 +105,7 @@ public class Terminal : MonoBehaviour
                 {
                     Debug.Log("got to 90 :(");
                     Destroy(curves[^1].gameObject);
+                    curves[^1].start.curves.Remove(curves[^1]);
                     curves.Remove(curves[^1]);
                 }
             }
@@ -112,6 +113,7 @@ public class Terminal : MonoBehaviour
             {
                 Debug.Log("got to 90 :(");
                 Destroy(curves[^1].gameObject);
+                curves[^1].start.curves.Remove(curves[^1]);
                 curves.Remove(curves[^1]);
             }
         }

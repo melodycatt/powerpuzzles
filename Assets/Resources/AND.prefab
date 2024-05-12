@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 261019736058889379}
   - component: {fileID: 5265030908799724445}
   - component: {fileID: -660947501962425201}
+  - component: {fileID: -3961647430135114283}
   m_Layer: 6
   m_Name: AND
   m_TagString: Untagged
@@ -143,6 +144,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-3961647430135114283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2324946441190119772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b924d05ad428ba43aa0561ffc322e4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Logical AND
+  Description: A logic gate that turns on if BOTH inputs are on
+  trigger: {fileID: 0}
+  tooltip: {fileID: 0}
+  mousepos: {x: 0, y: 0, z: 0}
+  tooltips:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &6715774369220765763
 GameObject:
   m_ObjectHideFlags: 0
