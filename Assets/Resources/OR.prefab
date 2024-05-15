@@ -116,6 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0}
   grid: {fileID: 0}
+  shop: {fileID: 0}
   BlockCount: 256
 --- !u!50 &5541918442536445735
 Rigidbody2D:
@@ -156,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b924d05ad428ba43aa0561ffc322e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Logic
   Description: 
   trigger: {fileID: 0}
   tooltip: {fileID: 0}

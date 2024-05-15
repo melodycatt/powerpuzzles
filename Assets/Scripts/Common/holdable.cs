@@ -8,9 +8,11 @@ public class holdable : MonoBehaviour
 {
     private HingeJoint2D hinge;
     public Vector2 offset;
-    private State state;
+    public State state;
     private Rigidbody2D rb;
     public GameObject grid;
+
+    public ShopManager shop;
 
     [Range(64.0f, 1024f)] public float BlockCount = 256;
     private Vector2 dim;
@@ -35,59 +37,61 @@ public class holdable : MonoBehaviour
     {
         Free,
         Held,
-        Pinned
+        Pinned,
+        Group
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
+        if (state != State.Group) {
             Vector2 mousepos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-            if (GetComponent<Collider2D>().OverlapPoint(mousepos))
+            if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftShift) && !shop.hover)
             {
-                GetComponent<Collider2D>().isTrigger = false;
-                rb.gravityScale = 1;
-                state = State.Held;
-                hinge = gameObject.AddComponent<HingeJoint2D>();
-                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                mousePos.z = transform.position.z;
-                float direction = Vector3.Dot((mousePos - transform.position).normalized, transform.right);
-                float distance = Mathf.Sqrt(Mathf.Pow((mousePos.x - transform.position.x), 2) + Mathf.Pow((mousePos.y - transform.position.y), 2)) / transform.localScale.x;
-                if (direction < 0)
-                    distance *= -1;
-                hinge.autoConfigureConnectedAnchor = false;
-                hinge.anchor = new Vector2(distance, 0);
-                hinge.enableCollision = true;
-                hinge.connectedAnchor = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-                Debug.Log(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y));
-                foreach (Terminal t in gameObject.GetComponentsInChildren<Terminal>())
+                if (GetComponent<Collider2D>().OverlapPoint(mousepos))
                 {
-                    Debug.Log("hi");
-                    t.Free();
+                    GetComponent<Collider2D>().isTrigger = false;
+                    rb.gravityScale = 1;
+                    state = State.Held;
+                    hinge = gameObject.AddComponent<HingeJoint2D>();
+                    Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    mousePos.z = transform.position.z;
+                    float direction = Vector3.Dot((mousePos - transform.position).normalized, transform.right);
+                    float distance = Mathf.Sqrt(Mathf.Pow((mousePos.x - transform.position.x), 2) + Mathf.Pow((mousePos.y - transform.position.y), 2)) / transform.localScale.x;
+                    if (direction < 0)
+                        distance *= -1;
+                    hinge.autoConfigureConnectedAnchor = false;
+                    hinge.anchor = new Vector2(distance, 0);
+                    hinge.enableCollision = true;
+                    hinge.connectedAnchor = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+                    foreach (Terminal t in gameObject.GetComponentsInChildren<Terminal>())
+                    {
+                        t.Free();
+                    }
                 }
             }
-        }
-        else if ((Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0) && state == State.Held)
-        {
-            Vector2 mousepos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-            hinge.connectedAnchor = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-        }
-        if (Input.GetMouseButtonUp(0) && state == State.Held)
-        {
-            Vector2 mousepos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-            if (grid.GetComponent<SpriteRenderer>().bounds.Contains(mousepos))
+            else if ((Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0) && state == State.Held)
             {
-                rb.gravityScale = 0;
-                rb.velocity = Vector2.zero;
-                rb.angularVelocity = 0;
-                GetComponent<Collider2D>().isTrigger = true;
-                state = State.Pinned;
-                Vector2 blockPos = Vector2Int.RoundToInt(Camera.main.WorldToViewportPoint(new Vector3(mousepos.x, mousepos.y, 0)) * count);
-                Vector2 blockCenter = Camera.main.ViewportToWorldPoint(blockPos * size + size * 0.5f);
-                transform.SetPositionAndRotation(blockCenter, Quaternion.identity);
-            } else state = State.Free;
-            Destroy(hinge);
+                hinge.connectedAnchor = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+            }
+            if (Input.GetMouseButtonUp(0) && state == State.Held)
+            {
+                if (grid.GetComponent<SpriteRenderer>().bounds.Contains(mousepos))
+                {
+                    Pin(new(mousepos.x, mousepos.y, 0));
+                } else state = State.Free;
+                Destroy(hinge);
+                Debug.Log(state);
+            }
         }
+    }
+
+    public void Pin(Vector3 mousepos) {
+        rb.gravityScale = 0;
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0;
+        GetComponent<Collider2D>().isTrigger = true;
+        state = State.Pinned;
+        transform.SetPositionAndRotation(mousepos, Quaternion.identity);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 
 public class Terminal : MonoBehaviour
 {
@@ -43,12 +42,7 @@ public class Terminal : MonoBehaviour
     void Start()
 	{
         parnet = transform.parent.GetComponent<CComponent>();
-        wire = new GameObject("Wire");
-        LineRenderer lr = wire.AddComponent<LineRenderer>();
-        lr.startWidth = 0.075f;
-        lr.endWidth = 0.075f;
-        lr.sortingOrder = 10;
-        wire.AddComponent<Wire>();
+        wire = Resources.Load<GameObject>("Wire");
     }
 
     private void Update()
@@ -105,7 +99,10 @@ public class Terminal : MonoBehaviour
                 {
                     Debug.Log("got to 90 :(");
                     Destroy(curves[^1].gameObject);
-                    curves[^1].start.curves.Remove(curves[^1]);
+                    if (curves[^1].start != this)
+                    {
+                        curves[^1].start.curves.Remove(curves[^1]);
+                    }
                     curves.Remove(curves[^1]);
                 }
             }
@@ -113,7 +110,10 @@ public class Terminal : MonoBehaviour
             {
                 Debug.Log("got to 90 :(");
                 Destroy(curves[^1].gameObject);
-                curves[^1].start.curves.Remove(curves[^1]);
+                if (curves[^1].start != this)
+                {
+                    curves[^1].start.curves.Remove(curves[^1]);
+                }
                 curves.Remove(curves[^1]);
             }
         }
@@ -135,12 +135,18 @@ public class Terminal : MonoBehaviour
         curves.Clear();
     }
 
-    public void CreateWire(Vector2 s, Vector2 e, WireType type)
+    public void CreateWire(Vector3 s, Vector3 e, WireType type)
     {
         GameObject tempWire = Instantiate(wire);
         tempWire.transform.parent = transform;
         tempWire.GetComponent<Wire>().Init(s, e, this);
         curves.Add(tempWire.GetComponent<Wire>());
     }
-}
 
+    public Wire ReturnWire()
+    {
+        GameObject tempWire = Instantiate(wire);
+        curves.Add(tempWire.GetComponent<Wire>());
+        return tempWire.GetComponent<Wire>();
+    }
+}

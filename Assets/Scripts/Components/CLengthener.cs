@@ -37,12 +37,6 @@ public class CLengthener : CComponent
         _high = false;
     }
 
-    // Update is called once per frame
-    void Update()
-	{
-			
-	}
-
     private void OnMouseDown()
     {
     }

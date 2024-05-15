@@ -17,14 +17,16 @@ public class Wire : MonoBehaviour
 		{
 			_high = value;
 			if (end != null) end.high = value;
-			if(value)
-			{
-                lr.material.SetColor("_Color", new Color(0.1f, 0.65f, 0));
-            } else
-			{
-                lr.material.SetColor("_Color", new Color(0.8f, 0.8f, 0.8f));
-            }
-			curve.Render(lr);
+			if (lr != null) {
+				if(value)
+				{
+					lr.material.SetColor("_Color", new Color(0.1f, 0.65f, 0));
+				} else
+				{
+					lr.material.SetColor("_Color", new Color(0.8f, 0.8f, 0.8f));
+				}
+				curve.Render(lr);
+			}
         }
 	} 
 

@@ -28,12 +28,6 @@ public class CInput : CComponent
         high = false;
     }
 
-    // Update is called once per frame
-    void Update()
-	{
-			
-	}
-
     private void OnMouseDown()
     {
         high = !high;

@@ -24,7 +24,7 @@ public class Tooltip : MonoBehaviour
         get => _enabled;
         set
         {
-            if (!value) tooltip.position = new Vector3(0, 0, -100);
+            tooltip.gameObject.SetActive(value);
             _enabled = value;
         }
     }

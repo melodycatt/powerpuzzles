@@ -20,11 +20,5 @@ public class LOr : CComponent
 	{
         base.Start();
 	}
-
-	// Update is called once per frame
-	void Update()
-	{
-	    
-	}
 }
 
