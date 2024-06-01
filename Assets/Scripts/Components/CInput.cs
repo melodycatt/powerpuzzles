@@ -20,8 +20,8 @@ public class CInput : CComponent
 	// Use this for initialization
 	new void Start()
 	{
-        terminals = GetComponentsInChildren<Terminal>();
         sprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        Debug.Log(sprite);
         defaultSprite = Resources.Load<Sprite>("Wires/input_a");
         on = Resources.Load<Sprite>("Wires/input_b");
 		sprite.sprite = defaultSprite;
@@ -30,6 +30,7 @@ public class CInput : CComponent
 
     private void OnMouseDown()
     {
+        Debug.Log("pen");
         high = !high;
         if (high) sprite.sprite = on;
         else sprite.sprite = defaultSprite;

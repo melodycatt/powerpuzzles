@@ -97,8 +97,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0}
+  state: 0
   grid: {fileID: 0}
+  shop: {fileID: 0}
   BlockCount: 256
+  initd: 0
 --- !u!50 &3925901207341211572
 Rigidbody2D:
   serializedVersion: 4
@@ -142,7 +145,8 @@ MonoBehaviour:
   y: 0
   grid: {fileID: 0}
   neighbours: []
-  terminals: []
+  holdable: {fileID: 0}
+  on: {fileID: 0}
 --- !u!114 &-753488598286904512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7058946879010665673}
   - component: {fileID: 344129779757173401}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NOT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +219,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c7489e677ca804e70a8a98088f69fa30, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -236,7 +240,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: db98fa0b8b1e54358801db411301ecc8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2d1a15b5775024aa3bcf7720252f0a39, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -263,6 +267,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terminal (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 968291632504139420, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466846955309905322, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
+      propertyPath: output
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.155
@@ -277,7 +289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -345,6 +357,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Terminal
       objectReference: {fileID: 0}
+    - target: {fileID: 968291632504139420, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.155
@@ -359,11 +375,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.692
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.001
+      value: 0.005
       objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalPosition.z

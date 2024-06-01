@@ -1,8 +1,8 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 using System;
 using UnityEngine;
-using Unity.VisualScripting;
 
 public class ComponentGroup
 {
@@ -12,11 +12,10 @@ public class ComponentGroup
     public int nOutputs;
     public List<CComponent> Nodes;
     public ShopManager shop;
+
     public List<List<Tuple<int, int>>> Inputs;
     public List<List<Tuple<int, int>>> Outputs;
     
-    public List<GameObject> nodes;
-
     public enum Gates {
         OR,
         AND,
@@ -28,12 +27,14 @@ public class ComponentGroup
     }
 
     // Start is called before the first frame update
-    public ComponentGroup(int nInputs, int nOutputs, List<List<Tuple<int, int>>> inputs, List<List<Tuple<int, int>>> outputs)
+    public ComponentGroup(int nInputs, int nOutputs, List<List<Tuple<int, int>>> inputs, List<List<Tuple<int, int>>> outputs, List<KeyValuePair<ComponentGroup.Gates, List<Tuple<int, int, int>>>> Logic)
     {
         this.nOutputs = nOutputs;
         this.nInputs = nInputs;
         Inputs = inputs;
         Outputs = outputs;
+        this.Logic = Logic;
+        Nodes = new();
     }
 
     // Update is called once per frame
@@ -41,46 +42,63 @@ public class ComponentGroup
     {
         foreach( Gates node in Logic.Select((x) => x.Key)) {
             GameObject tempNode = GameObject.Instantiate(shop.Objects[(int)node].Value);
+            tempNode.GetComponent<holdable>().StartPublic();
             tempNode.GetComponent<holdable>().shop = shop;
             tempNode.GetComponent<holdable>().Pin(new(0, 0, -20));
             tempNode.GetComponent<holdable>().state = holdable.State.Group;
             Nodes.Add(tempNode.GetComponent<CComponent>());
         } 
+    }
+
+    public IEnumerator Connect(List<Terminal> inputs, List<Terminal> outputs, List<Terminal> realoutputs) {
+        yield return 0;
+        yield return 0;
+        yield return 0;
         int i = 0;
         foreach( List<Tuple<int, int, int>> node in Logic.Select((x) => x.Value)) {
-            Terminal[] terminals = Nodes[i].GetComponentsInChildren<Terminal>();
+            Terminal[] terminals = Nodes[i].inputs;
             foreach(Tuple<int, int, int> j in node) {
+                Debug.Log(j);
+                Debug.Log(Nodes.Count);
+                Debug.Log(Nodes[j.Item2].outputs.Length);
                 Wire wire = terminals[j.Item1].ReturnWire();
                 wire.transform.position = new Vector3(0, 0, -20);
-                wire.start = Nodes[j.Item2].terminals.Where(x => x.output).ToList()[j.Item3];
+                wire.start = Nodes[j.Item2].outputs[j.Item3];
+                Nodes[j.Item2].outputs[j.Item3].curves.Add(wire);
                 wire.end = terminals[j.Item1];
                 wire.high = wire.start.high;
+
             }
             i++;
         }
         i = 0;
         foreach(List<Tuple<int, int>> input in Inputs) {
             foreach(Tuple<int, int> j in input) {
+                Debug.Log(j);
+                Debug.Log(i);
+                Debug.Log(String.Join(", ", inputs));
                 Wire wire = inputs[i].ReturnWire();
                 wire.transform.position = new Vector3(0, 0, -20);
-                wire.end = Nodes[j.Item1].terminals.Where(x => !x.output).ToList()[j.Item2];
+                wire.end = Nodes[j.Item1].inputs[j.Item2];
+                Nodes[j.Item1].inputs[j.Item2].curves.Add(wire);
                 wire.start = inputs[i];
                 wire.high = wire.start.high;
             }
             i++;
         }
+        
         i = 0;
         foreach( List<Tuple<int, int>> output in Outputs) {
             foreach(Tuple<int, int> j in output) {
                 Wire wire = outputs[i].ReturnWire();
                 wire.transform.position = new Vector3(0, 0, -20);
-                wire.start = Nodes[j.Item1].terminals.Where(x => x.output).ToList()[j.Item2];
+                wire.start = Nodes[j.Item1].outputs[j.Item2];
+                Nodes[j.Item1].outputs[j.Item2].curves.Add(wire);
                 wire.end = outputs[i];
                 wire.high = wire.start.high;
             }
             i++;
         }
-
     }
 
     static bool OR(List<bool> inputs)

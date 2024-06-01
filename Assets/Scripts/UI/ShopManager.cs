@@ -45,6 +45,7 @@ public class ShopManager : MonoBehaviour
 
     public void Select(int valI)
     {
+        Debug.Log(Objects.Count);
         placing = true;
         this.valI = (valI) % Objects.Count;
     }

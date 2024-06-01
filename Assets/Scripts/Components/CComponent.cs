@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CComponent : MonoBehaviour {
     public int x;
@@ -12,15 +13,17 @@ public class CComponent : MonoBehaviour {
         set
         {
             _high = value;
+            Debug.Log("some component got a value");
+            Debug.Log(value);
         }
     }
     protected Sprite defaultSprite;
     protected SpriteRenderer sprite;
     public CircuitGrid grid;
     public List<CComponent> neighbours = new(4);
-    public Terminal[] terminals;
-    public Terminal[] inputs => Array.FindAll(terminals, (x) => !x.output);
-    public Terminal[] outputs => Array.FindAll(terminals, (x) => x.output);
+    public Terminal[] terminals => GetComponentsInChildren<Terminal>();
+    public Terminal[] inputs => Array.FindAll(terminals, (x) => !x.output && x is RealTerminal y);
+    public Terminal[] outputs => Array.FindAll(terminals, (x) => x.output && x is RealTerminal y);
     public holdable holdable;
 
     public holdable.State state
@@ -33,7 +36,6 @@ public class CComponent : MonoBehaviour {
 
     public void Start()
     {
-        terminals = GetComponentsInChildren<Terminal>();
         sprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
         holdable = GetComponent<holdable>();
         defaultSprite = sprite.sprite;
@@ -43,29 +45,33 @@ public class CComponent : MonoBehaviour {
 
     public virtual void UpdateNode()
     {
-        if (Array.Find(terminals, x => x.output) != null) Array.Find(terminals, x => x.output).high = high;
+        Array.ForEach(outputs, (x) => {
+            if (x.high != high && !Camera.main.GetComponent<CameraUtil>().TutorialPause) x.high = high;
+        });
     }
 
     public virtual void Update()
     {
-        Vector2 mousepos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-        if (Input.GetMouseButton(1) && state == holdable.State.Pinned && GetComponent<Collider2D>().OverlapPoint(mousepos))
-        {
-            if (Input.GetKey(KeyCode.LeftShift))
+        if (!Camera.main.GetComponent<CameraUtil>().TutorialPause) {
+            Vector2 mousepos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+            if (Input.GetMouseButton(1) && state == holdable.State.Pinned && GetComponent<Collider2D>().OverlapPoint(mousepos))
             {
-                transform.Rotate(new Vector3(0, 0, -90 * Time.deltaTime));
-                foreach (Terminal t in gameObject.GetComponentsInChildren<Terminal>())
+                if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    t.Free();
+                    transform.Rotate(new Vector3(0, 0, -90 * Time.deltaTime));
+                    foreach (Terminal t in gameObject.GetComponentsInChildren<Terminal>())
+                    {
+                        t.Free();
+                    }
                 }
-            }
-            else if (Input.GetMouseButtonDown(1))
-            {
-                if (Mathf.Round(transform.rotation.eulerAngles.z / 90) * 90 == transform.rotation.eulerAngles.z) transform.Rotate(new Vector3(0, 0, -90));
-                else transform.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Round(transform.rotation.eulerAngles.z / 90) * 90));
-                foreach (Terminal t in gameObject.GetComponentsInChildren<Terminal>())
+                else if (Input.GetMouseButtonDown(1))
                 {
-                    t.Free();
+                    if (Mathf.Round(transform.rotation.eulerAngles.z / 90) * 90 == transform.rotation.eulerAngles.z) transform.Rotate(new Vector3(0, 0, -90));
+                    else transform.rotation = Quaternion.Euler(new Vector3(0, 0, Mathf.Round(transform.rotation.eulerAngles.z / 90) * 90));
+                    foreach (Terminal t in gameObject.GetComponentsInChildren<Terminal>())
+                    {
+                        t.Free();
+                    }
                 }
             }
         }

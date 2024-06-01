@@ -29,17 +29,4 @@ public class CLamp : CPowerable
         defaultSprite = Resources.Load<Sprite>("Wires/lamp_a");
         on = Resources.Load<Sprite>("Wires/lamp_b");
     }
-
-    // Update is called once per frame
-    public override void updateNode(CComponent source, CComponent sender, bool remove)
-    {
-        base.updateNode(source, sender, remove);
-        if(powerSources.Count > 0)
-        {
-            sprite.sprite = on;
-        } else
-        {
-            sprite.sprite = defaultSprite;
-        }
-    }
 }

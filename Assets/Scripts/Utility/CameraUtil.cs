@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using TMPro;
 using System;
-using Sirenix.OdinInspector;
 
-public class CameraUtil : SerializedMonoBehaviour
+public class CameraUtil : MonoBehaviour
 {
 	public TextMeshProUGUI bitsCounter;
 	public ShopManager shop;
+
+	public bool holding;
+
+	public bool TutorialPause = false;
 
 	public int _bits = 1000;
 	public int bits
@@ -23,6 +26,14 @@ public class CameraUtil : SerializedMonoBehaviour
 	void Start()
 	{
 		bitsCounter.text = _bits.ToString();
+
+	}
+
+	public void toggleShop() {
+		if (!shop.enabled) shop.hover = false;
+		shop.enabled = !shop.enabled;
+		shop.gameObject.SetActive(!shop.gameObject.activeInHierarchy);
+
 	}
 
 	// Update is called once per frame
@@ -30,9 +41,16 @@ public class CameraUtil : SerializedMonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.B))
 		{
-			shop.enabled = !shop.enabled;
-			shop.gameObject.SetActive(!shop.gameObject.activeInHierarchy);
-			
+			toggleShop();
+		}
+		if (Input.GetKeyDown(KeyCode.F)) {
+			GameObject NOT = GameObject.Find("NOT CRASH PLEASE");
+			CComponent LNOT = NOT.GetComponent<LNot>();
+			Debug.Log(NOT);
+			Debug.Log(LNOT);
+			print(LNOT.outputs[0]);
+			LNOT.outputs[0].high = false;
+			print(LNOT.outputs[0]);
 		}
 	}
 

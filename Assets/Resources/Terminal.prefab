@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6772199445895679501}
   - component: {fileID: 362794044040558841}
   - component: {fileID: 1565085475596771968}
-  - component: {fileID: 8089999960389119305}
+  - component: {fileID: 6466846955309905322}
   m_Layer: 7
   m_Name: Terminal
   m_TagString: Untagged
@@ -121,7 +121,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &8089999960389119305
+--- !u!114 &6466846955309905322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 968291632504139420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0228cb58f5ed3408fbb53c7b546bf592, type: 3}
+  m_Script: {fileID: 11500000, guid: 1258f2ba97164466d811e74991ba682e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   curves: []

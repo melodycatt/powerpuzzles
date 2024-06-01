@@ -97,7 +97,7 @@ MonoBehaviour:
   y: 0
   grid: {fileID: 0}
   neighbours: []
-  terminals: []
+  holdable: {fileID: 0}
   on: {fileID: 0}
 --- !u!114 &1667702266294443031
 MonoBehaviour:
@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7058946879010665673}
   - component: {fileID: 344129779757173401}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Wire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,6 +218,14 @@ PrefabInstance:
     - target: {fileID: 968291632504139420, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_Name
       value: Terminal
+      objectReference: {fileID: 0}
+    - target: {fileID: 968291632504139420, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6466846955309905322, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
+      propertyPath: output
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalScale.x
