@@ -7,7 +7,7 @@ using UnityEngine.Windows;
 
 public class Tester : MonoBehaviour
 {
-    private List<CLamp> Outputs;
+    private List<COutput> Outputs;
     private List<CInput> Inputs;
 
     
@@ -19,10 +19,10 @@ public class Tester : MonoBehaviour
         int idI = 0;
         foreach (GameObject obj in scene.GetRootGameObjects())
         {
-            if (obj.GetComponent<CLamp>() != null)
+            if (obj.GetComponent<COutput>() != null)
             {
-                Outputs.Add(obj.GetComponent<CLamp>());
-                obj.GetComponent<CLamp>().id = idI;
+                Outputs.Add(obj.GetComponent<COutput>());
+                obj.GetComponent<COutput>().id = idI;
                 idI++;
             }
             if (obj.GetComponent<CInput>())
@@ -41,7 +41,7 @@ public class Tester : MonoBehaviour
 
     void StartTesting()
     {
-        foreach(CLamp ouptur in Outputs) 
+        foreach(COutput ouptur in Outputs) 
         {
             ouptur.testing = true;
         }

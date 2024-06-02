@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CLamp : CPowerable
+public class COutput : CPowerable
 {
     public bool testing = false;
     //public Tester Tester;
