@@ -21,9 +21,6 @@ public class HiddenTerminal : Terminal
             {
                 if (parnet is CGroup gparnet) gparnet.HiddenHigh(value);
             }
-            Debug.Log(value);
-            Debug.Log(output);
-
         }
     }
 

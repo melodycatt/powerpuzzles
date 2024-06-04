@@ -58,25 +58,18 @@ public class ComponentGroup
         foreach( List<Tuple<int, int, int>> node in Logic.Select((x) => x.Value)) {
             Terminal[] terminals = Nodes[i].inputs;
             foreach(Tuple<int, int, int> j in node) {
-                Debug.Log(j);
-                Debug.Log(Nodes.Count);
-                Debug.Log(Nodes[j.Item2].outputs.Length);
                 Wire wire = terminals[j.Item1].ReturnWire();
                 wire.transform.position = new Vector3(0, 0, -20);
                 wire.start = Nodes[j.Item2].outputs[j.Item3];
                 Nodes[j.Item2].outputs[j.Item3].curves.Add(wire);
                 wire.end = terminals[j.Item1];
                 wire.high = wire.start.high;
-
             }
             i++;
         }
         i = 0;
         foreach(List<Tuple<int, int>> input in Inputs) {
             foreach(Tuple<int, int> j in input) {
-                Debug.Log(j);
-                Debug.Log(i);
-                Debug.Log(String.Join(", ", inputs));
                 Wire wire = inputs[i].ReturnWire();
                 wire.transform.position = new Vector3(0, 0, -20);
                 wire.end = Nodes[j.Item1].inputs[j.Item2];

@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using TMPro;
 using System;
+using Unity.VisualScripting;
 
 public class CameraUtil : MonoBehaviour
 {
 	public TextMeshProUGUI bitsCounter;
 	public ShopManager shop;
-
+	public TruthTable table;
 	public bool holding;
+
+	public int inputsN;
+	public int outputsN;
+
+	public List<CInput> Inputs;
+	public List<COutput> Outputs;
 
 	public bool TutorialPause = false;
 
@@ -25,8 +32,22 @@ public class CameraUtil : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		float height = Camera.main.orthographicSize * 2;
+		float inputGap = height / inputsN;
+		float outputGap = height / outputsN;
+		GameObject Input = Resources.Load<GameObject>("Input");
+		GameObject Output = Resources.Load<GameObject>("Output");
+		for (float i = Camera.main.orthographicSize - inputGap / 2; i >= -Camera.main.orthographicSize + inputGap / 2; i-= inputGap) {
+			CInput tempIn = Instantiate(Input).GetComponent<CInput>();
+			Inputs.Add(tempIn);
+			tempIn.transform.position = new(6.75f, i, 0);
+		}
+		for (float i = Camera.main.orthographicSize - outputGap / 2; i >= -Camera.main.orthographicSize + outputGap / 2; i-= outputGap) {
+			COutput tempOut = Instantiate(Output).GetComponent<COutput>();
+			Outputs.Add(tempOut);
+			tempOut.transform.position = new(-6.75f, i, 0);
+		}
 		bitsCounter.text = _bits.ToString();
-
 	}
 
 	public void toggleShop() {
@@ -44,13 +65,26 @@ public class CameraUtil : MonoBehaviour
 			toggleShop();
 		}
 		if (Input.GetKeyDown(KeyCode.F)) {
-			GameObject NOT = GameObject.Find("NOT CRASH PLEASE");
-			CComponent LNOT = NOT.GetComponent<LNot>();
-			Debug.Log(NOT);
-			Debug.Log(LNOT);
-			print(LNOT.outputs[0]);
-			LNOT.outputs[0].high = false;
-			print(LNOT.outputs[0]);
+			table.Table = new Dictionary<bool[], bool[]>
+			{
+				{ 
+					new bool[] { true, false}, 
+					new bool[] { true, true } 
+				},
+				{
+					new bool[] { true, true },
+					new bool[] { true, false }
+				},
+				{
+					new bool[] { false, true },
+					new bool[] { false, false }
+				},
+				{
+					new bool[] { false, false },
+					new bool[] { false, true }
+				},
+			};
+			StartCoroutine(table.Check());
 		}
 	}
 

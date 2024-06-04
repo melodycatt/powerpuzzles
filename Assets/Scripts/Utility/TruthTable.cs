@@ -10,7 +10,7 @@ public class TruthTable : MonoBehaviour
 
     public List<CInput> Inputs {
         get {
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Inputs");
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Input");
             List<CInput> output = new();
             foreach (GameObject i in gameObjects)
             {
@@ -23,7 +23,7 @@ public class TruthTable : MonoBehaviour
     {
         get
         {
-            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Outputs");
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Output");
             List<COutput> output = new();
             foreach (GameObject i in gameObjects)
             {
@@ -33,11 +33,6 @@ public class TruthTable : MonoBehaviour
         }
     }
 
-    public TruthTable(Dictionary<bool[], bool[]> table)
-    {
-        Table = table;
-    }
-
     public IEnumerator Check()
     {
         bool superAllG = true;
@@ -45,14 +40,20 @@ public class TruthTable : MonoBehaviour
         {
             for (int i = 0; i < Inputs.Count; i++)
             {
+                print(t.Key[i]);
                 Inputs[i].high = t.Key[i];
             }
             yield return new WaitForSeconds(1);
             for (int i = 0; i < Outputs.Count; i++)
             {
-                superAllG = Outputs[i].high != t.Value[i];
+                print(Outputs[i].high);
+                print(Outputs[i]);
+                print(t.Value[i]);
+                superAllG = Outputs[i].high == t.Value[i];
             }
         }
         yield return superAllG;
-    }
+        Debug.Log("AllG Bruh");
+        Debug.Log(superAllG);
+    }//
 }

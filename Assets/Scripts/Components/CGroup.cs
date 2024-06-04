@@ -25,9 +25,7 @@ public class CGroup : CComponent
         get => _high;
         set
         {
-            Debug.Log(value);
             for (int i = 0; i < inputs.Count(); i++) {
-                Debug.Log("cgroup got realinput");
                 HiddenInputs[i].high = inputs[i].high;
             }
 
@@ -76,16 +74,21 @@ public class CGroup : CComponent
         GameObject terminal = Resources.Load<GameObject>("Terminal");
         float inputGap = sprite.bounds.size.y / nInputs;
         float outputGap = sprite.bounds.size.y / nOutputs;
+        if (nInputs == 1) inputGap = 0;
+        if (nOutputs == 1) outputGap = 0;
         //1: 0 - 0, i< 1 good
         // 2: 0 - 1, i < 1 good
         // 3: 0 - 1, i < 2 goof
         // 4: 0 - 2, i < 2 good
         // 5: 0 - 2, i< 3 good
-        for (int i = 0 - (int)Math.Floor(nInputs / 2f); i < (int)Math.Ceiling(nInputs / 2f); i++) {
+        print(inputGap);
+        for (int i = (int)Math.Floor(nInputs / 2f); i > (int)-Math.Ceiling(nInputs / 2f); i--) {
+            print(i);
+            print(inputGap / 2 + i * inputGap);
             GameObject tempTerminal = Instantiate(terminal);
             tempTerminal.transform.parent = transform;
             tempTerminal.GetComponent<Terminal>().parnet = this;
-            tempTerminal.transform.position = transform.position + new Vector3(sprite.bounds.size.x / 2, inputGap / 2 + i * inputGap);
+            tempTerminal.transform.localPosition = new Vector3(sprite.bounds.size.x / 2, i * inputGap - inputGap / 2, 0);
 
             GameObject hiddenInput = Instantiate(terminal);
             Destroy(hiddenInput.GetComponent<RealTerminal>());
@@ -97,12 +100,12 @@ public class CGroup : CComponent
 
             HiddenInputs.Add(hiddenInput.GetComponent<HiddenTerminal>());
         }
-        for (int i = 0 - (int)Math.Floor(nOutputs / 2f); i < (int)Math.Ceiling(nOutputs / 2f); i++) {
+        for (int i = (int)Math.Floor(nOutputs / 2f); i > (int)-Math.Ceiling(nOutputs / 2f); i--) {
             GameObject tempTerminal = Instantiate(terminal);
             tempTerminal.transform.parent = transform;
             tempTerminal.GetComponent<Terminal>().parnet = this;
             tempTerminal.GetComponent<Terminal>().output = true;
-            tempTerminal.transform.position = transform.position + new Vector3(-sprite.bounds.size.x / 2, outputGap / 2 + i * outputGap, 0);
+            tempTerminal.transform.localPosition = new Vector3(-sprite.bounds.size.x / 2, i * outputGap - outputGap / 2, 0);
 
             GameObject hiddenInput = Instantiate(terminal);
             Destroy(hiddenInput.GetComponent<RealTerminal>());

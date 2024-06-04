@@ -89,7 +89,7 @@ public class holdable : MonoBehaviour
                         hinge.anchor = new Vector2(distance, 0);
                         hinge.enableCollision = true;
                         hinge.connectedAnchor = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
-                        foreach (Terminal t in gameObject.GetComponentsInChildren<Terminal>())
+                        foreach (RealTerminal t in gameObject.GetComponentsInChildren<RealTerminal>())
                         {
                             t.Free();
                         }
