@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.U2D;
 
 public class CameraUtil : MonoBehaviour
 {
+	[Range(0.05f, 1)]
+	public float UpdateSpeed = 0.05f;
 	public TextMeshProUGUI bitsCounter;
 	public ShopManager shop;
 	public TruthTable table;
@@ -19,7 +22,11 @@ public class CameraUtil : MonoBehaviour
 
 	public bool TutorialPause = false;
 
-	public int _bits = 1000;
+	public GameObject robot;
+
+	[SerializeField]
+	private int _bits = 1000;
+	public int startingBits = 2147483647;
 	public int bits
 	{
 		get => _bits;
@@ -50,11 +57,57 @@ public class CameraUtil : MonoBehaviour
 		bitsCounter.text = _bits.ToString();
 	}
 
-	public void toggleShop() {
-		if (!shop.enabled) shop.hover = false;
-		shop.enabled = !shop.enabled;
-		shop.gameObject.SetActive(!shop.gameObject.activeInHierarchy);
+	public void Reset() {
+		ResetPuts(inputsN, outputsN);
+		foreach(GameObject i in robot.GetComponent<Robot>().CurrentComps) {
+			Destroy(i);
+		}
+		robot.GetComponent<Robot>().CurrentComps.Clear();
+		bits = startingBits;
+	}
 
+	public void ResetPuts(int inputsN, int outputsN) {
+		foreach(CInput i in Inputs) {
+			Destroy(i.gameObject);
+		}
+		Inputs.Clear();
+		foreach(COutput i in Outputs) {
+			Destroy(i.gameObject);
+		}
+		Outputs.Clear();
+		float height = Camera.main.orthographicSize * 2;
+		float inputGap = height / inputsN;
+		float outputGap = height / outputsN;
+		GameObject Input = Resources.Load<GameObject>("Input");
+		GameObject Output = Resources.Load<GameObject>("Output");
+		for (float i = Camera.main.orthographicSize - inputGap / 2; i >= -Camera.main.orthographicSize + inputGap / 2; i-= inputGap) {
+			CInput tempIn = Instantiate(Input).GetComponent<CInput>();
+			Inputs.Add(tempIn);
+			tempIn.transform.position = new(6.75f, i, 0);
+		}
+		for (float i = Camera.main.orthographicSize - outputGap / 2; i >= -Camera.main.orthographicSize + outputGap / 2; i-= outputGap) {
+			COutput tempOut = Instantiate(Output).GetComponent<COutput>();
+			Outputs.Add(tempOut);
+			tempOut.transform.position = new(-6.75f, i, 0);
+		}
+	}
+
+	public void ClearPuts() {
+		foreach(CInput i in Inputs) {
+			Destroy(i.gameObject);
+		}
+		Inputs.Clear();
+		foreach(COutput i in Outputs) {
+			Destroy(i.gameObject);
+		}
+		Outputs.Clear();
+	}
+
+	public void toggleShop() {
+		shop.enabled = !shop.enabled;
+		if (!shop.enabled) shop.hover = false;
+		shop.gameObject.SetActive(!shop.gameObject.activeInHierarchy);
+		//robot.SetActive(!robot.activeInHierarchy);
 	}
 
 	// Update is called once per frame

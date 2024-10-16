@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Collections;
 
 public class Terminal : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class Terminal : MonoBehaviour
     public LayerMask terminal;
     public CComponent parnet;
 
-    protected bool _high;
+    protected bool _high = false;
     public virtual bool high
     {
         get => _high;
@@ -27,10 +29,17 @@ public class Terminal : MonoBehaviour
                 }
             } else if (parnet != null)
             {
+                Debug.Log(value);
+                if (!curves.Exists(x => x.high) || value) {
+                    _high = value;
+                } else {
+                    _high = true;
+                }
                 parnet.high = value;
             }
         }
     }
+
 
     public enum WireType
     {
@@ -43,6 +52,14 @@ public class Terminal : MonoBehaviour
 	{
         parnet = transform.parent.GetComponent<CComponent>();
         wire = Resources.Load<GameObject>("Wire");
+    }
+
+    void RemoveOff() {
+        if (!curves.Exists(x => x.high && x != curves[^1])) {
+            Debug.Log("1");
+            _high = false;
+            parnet.high = false;
+        }
     }
 
     private void Update()
@@ -59,6 +76,7 @@ public class Terminal : MonoBehaviour
                 {
                     wiring = true;
                     curves[^1].end = null;
+                    RemoveOff();
                 }
             }
             else if ((Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0) && wiring)
@@ -73,7 +91,7 @@ public class Terminal : MonoBehaviour
                 if (Physics2D.OverlapCircle(mousepos, .1f, terminal))
                 {
                     candidateTerminals = Physics2D.OverlapCircleAll(mousepos, 0.35f, terminal);
-                    candidateTerminals = Array.FindAll(candidateTerminals, (x) => x.GetComponent<Terminal>().output == false);
+                    candidateTerminals = Array.FindAll(candidateTerminals, (x) => !x.GetComponent<Terminal>().output);
                     if (candidateTerminals.Length > 0)
                     {
                         Terminal finalTerminal = candidateTerminals[0].GetComponent<Terminal>();
@@ -81,14 +99,14 @@ public class Terminal : MonoBehaviour
                         foreach (Collider2D collider in candidateTerminals)
                         {
                             if ((collider.transform.position - (Vector3)mousepos).magnitude <= (TerminalPosition - (Vector3)mousepos).magnitude) {
-                                finalTerminal = Array.Find(collider.gameObject.GetComponents<Terminal>(), (x) => x.output == false);
+                                finalTerminal = Array.Find(collider.gameObject.GetComponents<Terminal>(), (x) => !x.output);
                                 TerminalPosition = finalTerminal.transform.position;
                             }
                         }
                         curves[^1].curve.UpdateEnd(TerminalPosition, curves[^1].lr);
-                        finalTerminal.curves.Add(curves[^1]);
+                        finalTerminal.high = curves[^1].high;
+                        if (!finalTerminal.curves.Contains(curves[^1])) finalTerminal.curves.Add(curves[^1]);
                         curves[^1].end = finalTerminal;
-                        finalTerminal.high = high;
                     } else
                     {
                         Destroy(curves[^1].gameObject);

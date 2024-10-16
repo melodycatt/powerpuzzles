@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 using System;
 
 public class LAnd : CComponent
@@ -12,7 +13,7 @@ public class LAnd : CComponent
         }
         set
         {
-            _high = Array.TrueForAll(inputs, (e) => e.high);
+            _high = Array.TrueForAll(inputs, (e) => e.high);// && !inputs.ToList().Exists(x => x.high);
             if (_high) sprite.sprite = on;
             else sprite.sprite = defaultSprite;
         }

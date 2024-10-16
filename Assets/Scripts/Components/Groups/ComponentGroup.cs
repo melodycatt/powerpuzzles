@@ -6,8 +6,13 @@ using UnityEngine;
 
 public class ComponentGroup
 {
-
     public List<KeyValuePair<Gates, List<Tuple<int, int, int>>>> Logic;
+
+    public void Save() {
+        List<string> gates = Logic.Select((x) => x.Key.ToString()).ToList();
+    }
+
+
     public int nInputs;
     public int nOutputs;
     public List<CComponent> Nodes;
@@ -92,35 +97,5 @@ public class ComponentGroup
             }
             i++;
         }
-    }
-
-    static bool OR(List<bool> inputs)
-    {
-        return inputs[0] || inputs[1];
-    }
-
-    static bool AND(List<bool> inputs)
-    {
-        return inputs[0] && inputs[1];
-    }
-    static bool XOR(List<bool> inputs)
-    {
-        return (inputs[0] && !inputs[1]) || (!inputs[0] && inputs[1]);
-    }
-    static bool NOT(List<bool> inputs)
-    {
-        return !inputs[0];
-    }
-    static bool NOR(List<bool> inputs)
-    {
-        return !(inputs[0] || inputs[1]);
-    }
-    static bool NAND(List<bool> inputs)
-    {
-        return !(inputs[0] && inputs[1]);
-    }
-    static bool XNOR(List<bool> inputs)
-    {
-        return !((inputs[0] && !inputs[1]) || (!inputs[0] && inputs[1]));
     }
 }

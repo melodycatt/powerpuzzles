@@ -3733,7 +3733,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.9
+  orthographic size: 16.750898
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -3888,10 +3888,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 080dc8894e3d0481eb5a9b2c97b7e4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UpdateSpeed: 0.05
   bitsCounter: {fileID: 766882160}
   shop: {fileID: 161272878}
+  table: {fileID: 0}
+  holding: 0
+  inputsN: 0
+  outputsN: 0
+  Inputs: []
+  Outputs: []
   TutorialPause: 0
+  robot: {fileID: 0}
   _bits: 100
+  startingBits: 2147483647
 --- !u!114 &1953198431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3981,7 +3990,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.9
+  orthographic size: 16.773151
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

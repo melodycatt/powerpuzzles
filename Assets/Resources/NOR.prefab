@@ -160,8 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b924d05ad428ba43aa0561ffc322e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
+  Name: NOR Gate
+  Description: An inverted OR gate. Turns on if NEITHER of its inputs are on.
   trigger: {fileID: 0}
   tooltip: {fileID: 0}
   mousepos: {x: 0, y: 0, z: 0}
@@ -270,7 +270,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 968291632504139420, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalScale.x
@@ -356,7 +356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 968291632504139420, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6466846955309905322, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: output
@@ -446,7 +446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 968291632504139420, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6772199445895679501, guid: c66552817e5a0435aa0dd7ca7468936f, type: 3}
       propertyPath: m_LocalScale.x

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using System.Linq;
 
@@ -40,14 +41,17 @@ public class CComponent : MonoBehaviour {
         holdable = GetComponent<holdable>();
         defaultSprite = sprite.sprite;
         high = false;
-        InvokeRepeating(nameof(UpdateNode), 0.05f, 0.05f);
+        StartCoroutine(UpdateNode());
     }
 
-    public virtual void UpdateNode()
+    public virtual IEnumerator UpdateNode()
     {
-        Array.ForEach(outputs, (x) => {
-            if (x.high != high && !Camera.main.GetComponent<CameraUtil>().TutorialPause) x.high = high;
-        });
+        while (true) {
+            Array.ForEach(outputs, (x) => {
+                if (x.high != high && !Camera.main.GetComponent<CameraUtil>().TutorialPause) x.high = high;
+            });
+            yield return new WaitForSeconds(Camera.main.GetComponent<CameraUtil>().UpdateSpeed);
+        }
     }
 
     public virtual void Update()

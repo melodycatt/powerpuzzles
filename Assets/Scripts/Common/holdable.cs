@@ -71,6 +71,7 @@ public class holdable : MonoBehaviour
         if (!Camera.main.GetComponent<CameraUtil>().TutorialPause) {            
             if (state != State.Group) {
                 Vector2 mousepos = new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y);
+                print(mousepos);
                 if (Input.GetMouseButtonDown(0) && Input.GetKey(KeyCode.LeftShift) && !shop.hover)
                 {
                     if (GetComponent<Collider2D>().OverlapPoint(mousepos) && !Camera.main.GetComponent<CameraUtil>().holding)

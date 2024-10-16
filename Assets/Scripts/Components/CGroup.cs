@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class CGroup : CComponent
 {
+
     //public Tester Tester;
 
     public List<List<Tuple<int, int>>> Inputs;
@@ -17,7 +18,6 @@ public class CGroup : CComponent
     public int nInputs;
     public int nOutputs;
 
-    [SerializeField]
     public ComponentGroup componentGroup;
 
     public override bool high
@@ -129,9 +129,6 @@ public class CGroup : CComponent
         }
     }
 
-    public override void UpdateNode()
-    {
-    }
 
     /* Update is called once per frame
     public override void UpdateNode(CComponent source, CComponent sender, bool remove)

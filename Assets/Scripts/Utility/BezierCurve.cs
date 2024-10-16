@@ -3,7 +3,6 @@ using System.Numerics;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
-[System.Serializable]
 public class BezierCurve
 {
     public Vector3[] Points;

@@ -23,6 +23,7 @@ public class ShopManager : MonoBehaviour
         Objects.Add(new(15, Resources.Load<GameObject>("NOR")));
         Objects.Add(new(20, Resources.Load<GameObject>("NAND")));
         Objects.Add(new(20, Resources.Load<GameObject>("XNOR")));
+        print(Objects[0]);
     }
 
     // Update is called once per frame
@@ -32,7 +33,9 @@ public class ShopManager : MonoBehaviour
         {
             GameObject temp = Instantiate(Objects[valI].Value);
             cameraUtil.bits -= Objects[valI].Key;
+            if (cameraUtil.robot.GetComponent<Robot>() != null) cameraUtil.robot.GetComponent<Robot>().CurrentComps.Add(temp);
             temp.GetComponent<holdable>().shop = this;
+            print(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             temp.transform.position = new(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0);
         }
     }
@@ -46,6 +49,7 @@ public class ShopManager : MonoBehaviour
     public void Select(int valI)
     {
         Debug.Log(Objects.Count);
+        Debug.Log(Objects);
         placing = true;
         this.valI = (valI) % Objects.Count;
     }
